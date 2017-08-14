@@ -1,0 +1,31 @@
+{
+  "name": "http_authentication",
+  "version": "1.0.0",
+  "description": "HTTP Authentication module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pkallas/http-authentication-practice.git"
+  },
+  "author": "pkallas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pkallas/http-authentication-practice/issues"
+  },
+  "homepage": "https://github.com/pkallas/http-authentication-practice#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "cookie-session": "^1.3.0",
+    "express": "^4.15.4",
+    "pg": "^7.1.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.5.0"
+  }
+}
