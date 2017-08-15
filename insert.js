@@ -1,10 +1,9 @@
 const client = require('./pg');
 const text = 'INSERT INTO users(email, password) VALUES($1, $2)';
-const values = [];
 
-const insertIntoDB = () => {client.query(text, values)
-  .then(res => {
 
+const insertIntoDB = (values) => {client.query(text, `${values}`)
+  .then(res => { console.log('Successfully added data to the database')
   })
   .catch(error => console.error(error.stack))};
 
