@@ -46,7 +46,7 @@ loginRouter.get('/login', (request, response) => {
 
 loginRouter.post('/login', (request, response, next) => {
   if(!request.body.email || !request.body.password){
-    // refactor to redirect to login and include lower message
+    // refactor to redirect to login and include lower message --> Done
     // "Please provide an email and a password to login"
     response.redirect('/login/?err=err1')
   }
@@ -61,7 +61,7 @@ loginRouter.post('/login', (request, response, next) => {
       next();
     }
     else {
-  // refactor to redirect to login and include lower message
+  // refactor to redirect to login and include lower message --> Done
   // 'There was no email and password combination matching your input'
       response.redirect('/login/?err=err2');
     }
