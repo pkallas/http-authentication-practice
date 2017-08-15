@@ -75,7 +75,7 @@ loginRouter.use('/login', setCookie);
 // redirect to homepage with cookie now set, but first set the session to use
 
 loginRouter.post('/login', (request, response, next) => {
-  request.session.email = `${request.body.email}`
+  request.session.email = `${request.body.email}`;
   response.redirect('/');
 })
 

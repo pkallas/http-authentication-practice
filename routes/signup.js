@@ -5,22 +5,10 @@ const client = require('../pg');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const cookieSession = require('cookie-session');
-const queryText = `SELECT email FROM users WHERE email=${input}`;
 const errorMessagesSignUp = {
   err1: 'Please provide an email and a password to sign up',
   err2: 'The passwords you entered do not match, please enter passwords again',
   err3: 'Already an active user, please login'
-};
-
-// This is a promise to query the db for a given email
-const queriesEmail = () => {client.query(queryText)
-  .then(result => {
-    result.rows.map(formInput => {
-      client.end();
-      return formInput.email
-    })
-  })
-  .catch(error => console.log('There is no email that matches in the database'));
 };
 
 //Create middleware function to use later to set a cookie
@@ -57,6 +45,17 @@ signupRouter.post('/signup', (request, response, next) => {
   }
   // check db, if email already exists, render 'That email already in use, please go to login'
   let input = request.body.email;
+  let queryText = `SELECT email FROM users WHERE email=${input}`;
+  // This is a promise to query the db for a given email
+  const queriesEmail = () => {client.query(queryText)
+    .then(result => {
+      result.rows.map(formInput => {
+        client.end();
+        return formInput.email
+      })
+    })
+    .catch(error => console.log('There is no email that matches in the database'));
+  };
   let userEmail = queriesEmail();
   if(userEmail.join('') === input) {
     // 'Already an active user, please login'
@@ -85,7 +84,7 @@ signupRouter.use('/signup', setCookie);
 // redirect to homepage with cookie now set, but first set the session to use
 
 signupRouter.post('/signup', (request, response) => {
-  request.session.email = `${request.body.email}`
+  request.session.email = `${request.body.email}`;
   response.redirect('/');
 });
 
