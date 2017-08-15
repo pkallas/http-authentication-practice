@@ -5,11 +5,18 @@
     <title>signup</title>
   </head>
   <body>
+    <% if (request.query.err === 'err1') {%>
+      <p><%= errorMessagesSignUp.err1 %></p>
+    <% } else if (request.query.err === 'err2') {%>
+      <p><%= errorMessagesSignUp.err2 %></p>
+    <% } else if (request.query.err === 'err3') {%>
+      <p><%= errorMessagesSignUp.err3 %></p>
+    <% } %>
     <form action='/' method='POST'>
       email:<input type='text' name='email'>
       password:<input type='password' name='password'>
       confirm password:<input type='password' name='confirmPassword'>
-      <input type='submit' valu='Signup'>
+      <input type='submit' value='Signup'>
     </form>
   </body>
 </html>
