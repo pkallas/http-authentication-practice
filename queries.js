@@ -9,14 +9,14 @@ const queriesEmail = () => {client.query(text)
       return formInput.email
     })
   })
-  .catch(error => console.log('There is already a unique email in the database that matches'));
+  .catch(error => console.log('There is no email that matches in the database'));
 };
 
 const queriesEmailPassword = () => {client.query(text2)
   .then(result => {
     result.rows.map(formInput => {
       client.end();
-      return `${formInput.email} ${formInput.password}`
+      return `${formInput.email}, ${formInput.password}`
     })
   })
   .catch(error => console.log('There is no email or password that matches that request'));
