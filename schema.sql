@@ -5,6 +5,6 @@ CREATE DATABASE http_authentication;
 
 CREATE TABLE users(
   id SERIAL PRIMARY KEY,
-  email VARCHAR(50),
+  email VARCHAR(50) UNIQUE,
   password VARCHAR(50)
 );
