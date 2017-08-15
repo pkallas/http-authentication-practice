@@ -10,19 +10,6 @@ const errorMessagesLogin = {
   err2: 'There was no email and password combination matching your input'
 };
 
-const queryText = `SELECT (email, password) FROM users WHERE email=${input} AND password=${input2}`;
-
-// This is a promise to query the db for a given email and password
-const queriesEmailPassword = () => {client.query(queryText)
-  .then(result => {
-    result.rows.map(formInput => {
-      client.end();
-      return `${formInput.email}, ${formInput.password}`
-    })
-  })
-  .catch(error => console.log('There is no email or password that matches that request'));
-}
-
 //Create middleware function to use later to set a cookie
 const setCookie = (request, response, next) => {cookieSession({
   name: 'session',
@@ -53,6 +40,17 @@ loginRouter.post('/login', (request, response, next) => {
   // get data from db
   let input = request.body.email;
   let input2 = request.body.password;
+  let queryText = `SELECT (email, password) FROM users WHERE email=${input} AND password=${input2}`;
+  // This is a promise to query the db for a given email and password
+  const queriesEmailPassword = () => {client.query(queryText)
+    .then(result => {
+      result.rows.map(formInput => {
+        client.end();
+        return `${formInput.email}, ${formInput.password}`
+      })
+    })
+    .catch(error => console.log('There is no email or password that matches that request'));
+  }
   let emailPasswordArray = queriesEmailPassword();
   let email = emailPasswordArray[0];
   let encryptedPassword = emailPasswordArray[1];
