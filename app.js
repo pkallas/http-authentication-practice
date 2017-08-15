@@ -25,11 +25,21 @@ app.get('/', (request, response) => {
   // Else send a welcome back message
   else {
     response.send(`<p>Welcome Back ${request.session}</p>
-      <a href='./views/homepage'>Logout</a>`);
-      //if link is clicked
-      response.clearCookie('session');
-      response.redirect('/');
+      <p>There's nothing to do here but logout</p>
+      <a href='/logout'>Logout</a>`);
   }
+});
+
+// Create a route for logout
+app.get('/logout', (request, response, next) => {
+  //if link is clicked, clear cookie-session
+  response.clearCookie('session');
+  next();
+});
+
+// Then redirect to homepage with no cookies
+app.get('/logout', (request, response) => {
+  response.redirect('/');
 });
 
 app.use(signupRouter);

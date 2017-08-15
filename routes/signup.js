@@ -5,8 +5,12 @@ const client = require('../pg');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const cookieSession = require('cookie-session');
-const cookieParser = require('cookie-parser');
 const queryText = `SELECT email FROM users WHERE email=${input}`;
+const errorMessagesSignUp = {
+  err1: 'Please provide an email and a password to sign up',
+  err2: 'The passwords you entered do not match, please enter passwords again',
+  err3: 'Already an active user, please login'
+};
 
 // This is a promise to query the db for a given email
 const queriesEmail = () => {client.query(queryText)
@@ -24,51 +28,64 @@ const setCookie = (request, response, next) => {cookieSession({
   name: 'session',
   keys: ['key1', 'key2', 'key3', 'key4'],
   maxAge: 60 * 1000
-  request.session = `${request.body.email}`
 });
   next();
 };
 
 signupRouter.get('/signup', (request, response) => {
-  response.render('signup');
+  // If no query error, render the page
+  if (!request.query) {
+    response.render('signup');
+  }
+  // If the first, second, or third error handling occurred,
+  // render the page plus the appropriate message
+  else {
+    response.render('signup', errorMessagesSignUp)
+  }
 });
 
 signupRouter.post('/signup', (request, response, next) => {
   if(!request.body.email || !request.body.password || !request.body.confirmPassword){
     // "Please provide an email and a password to sign up"
-    response.redirect('/signup' + textAbove)
+    // Refactor to include above text along with redirect
+    response.redirect('/signup/?err=err1');
   }
   if(request.body.password !== request.body.confirmPassword) {
     // 'The passwords you entered do not match, please enter passwords again'
-    response.redirect('/signup' + textAbove)
+    // Refactor to include above text along with redirect
+    response.redirect('/signup/?err=err2');
   }
   // check db, if email already exists, render 'That email already in use, please go to login'
   let input = request.body.email;
   let userEmail = queriesEmail();
   if(userEmail.join('') === input) {
     // 'Already an active user, please login'
-    response.redirect('/login' + textAbove)
+    // Refactor to include above text along with redirect
+    response.redirect('/signup/?err=err3');
   }
   // encrypt password
   else {
     bcrypt.hash(request.body.password, saltRounds).then(hash => {
       // insert form data into database
-      let text = 'INSERT INTO users(email, password) VALUES($1, $2)';
+      let insertText = 'INSERT INTO users(email, password) VALUES($1, $2)';
       let values = [request.body.email, hash];
-      client.query(text, values)
+      client.query(insertText, values)
         .then(res => { console.log('Successfully added data to the database');
         client.end();
         })
         .catch(error => console.error(error.stack))};
     })
-  next()
+  next();
 });
 
 // set cookie-session
 
 signupRouter.use('/signup', setCookie);
 
+// redirect to homepage with cookie now set, but first set the session to use
+
 signupRouter.post('/signup', (request, response) => {
+  request.session.email = `${request.body.email}`
   response.redirect('/');
 });
 
