@@ -47,14 +47,13 @@ signupRouter.post('/signup', (request, response, next) => {
   let input = request.body.email;
   let queryText = `SELECT email FROM users WHERE email=${input}`;
   // This is a promise to query the db for a given email
-  const queriesEmail = () => {client.query(queryText)
-    .then(result => {
-      result.rows.map(formInput => {
-        client.end();
-        return formInput.email
+  let queriesEmail = () => { client.query(queryText).then(result => {
+    result.rows.map(formInput => {
+      client.end();
+      return formInput.email
       })
     })
-    .catch(error => console.log('There is no email that matches in the database'));
+    .catch(error => console.log('There is no email that matches in the database'))
   };
   let userEmail = queriesEmail();
   if(userEmail.join('') === input) {
@@ -72,8 +71,9 @@ signupRouter.post('/signup', (request, response, next) => {
         .then(res => { console.log('Successfully added data to the database');
         client.end();
         })
-        .catch(error => console.error(error.stack))};
-    })
+        .catch(error => console.error(error.stack))
+      });
+    };
   next();
 });
 
