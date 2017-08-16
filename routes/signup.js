@@ -5,11 +5,6 @@ const client = require('../pg');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const cookieSession = require('cookie-session');
-const errorMessagesSignUp = {
-  err1: 'Please provide an email and a password to sign up',
-  err2: 'The passwords you entered do not match, please enter passwords again',
-  err3: 'Already an active user, please login'
-};
 
 //Create middleware function to use later to set a cookie
 const setCookie = (request, response, next) => {cookieSession({
@@ -20,20 +15,39 @@ const setCookie = (request, response, next) => {cookieSession({
   next();
 };
 
+// If no query error, render the page
 signupRouter.get('/signup', (request, response) => {
-  // If no query error, render the page
-  if (!request.query) {
-    response.render('signup');
+  if (!request.query.err) {
+    response.render('signup', {
+      error: false,
+      message: ''
+    })
   }
   // If the first, second, or third error handling occurred,
   // render the page plus the appropriate message
-  else {
-    response.render('signup', errorMessagesSignUp)
+  else if (request.query.err === 'err1') {
+    response.render('signup', {
+      error: true,
+      message: 'Please provide an email and a password to sign up'
+    })
+  }
+  else if (request.query.err === 'err2') {
+    response.render('signup', {
+      error: true,
+      message: 'The passwords you entered do not match, please enter passwords again'
+    })
+  }
+  else if (request.query.err === 'err3') {
+    response.render('signup', {
+      error: true,
+      message: 'Already an active user, please login'
+    })
   }
 });
 
 signupRouter.post('/signup', (request, response, next) => {
   if(!request.body.email || !request.body.password || !request.body.confirmPassword){
+    console.log('Did I make it here?')
     // "Please provide an email and a password to sign up"
     // Refactor to include above text along with redirect --> Done
     response.redirect('/signup/?err=err1');

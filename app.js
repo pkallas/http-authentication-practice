@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (request, response) => {
   // If a user is not signed in - there is no cookie - render the homepage
-  if(!request.cookies.session){
+  if(!request.cookies){
     response.render('homepage');
   }
   // Else send a welcome back message

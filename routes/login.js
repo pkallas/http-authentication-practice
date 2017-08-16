@@ -5,10 +5,6 @@ const client = require('../pg');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const cookieSession = require('cookie-session');
-const errorMessagesLogin = {
-  err1: 'Please provide an email and a password to login',
-  err2: 'There was no email and password combination matching your input'
-};
 
 //Create middleware function to use later to set a cookie
 const setCookie = (request, response, next) => {cookieSession({
@@ -21,13 +17,25 @@ const setCookie = (request, response, next) => {cookieSession({
 
 loginRouter.get('/login', (request, response) => {
   // If no query error, render the page
-  if (!request.query) {
-    response.render('login');
+  if (!request.query.err) {
+    response.render('login', {
+      error: false,
+      message: ''
+    });
   }
   // If the first or second error handling occurred,
   // render the page plus the appropriate message
-  else {
-    response.render('login', errorMessagesLogin)
+  else if (request.query.err === 'err1') {
+    response.render('login', {
+      error: true,
+      message: 'Please provide an email and a password to login'
+    })
+  }
+  else if (request.query.err === 'err2') {
+    response.render('login', {
+      error: true,
+      message: 'There was no email and password combination matching your input'
+    })
   }
 });
 
