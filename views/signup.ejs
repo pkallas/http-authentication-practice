@@ -5,10 +5,12 @@
     <title>signup</title>
   </head>
   <body>
-    <% if (error) {%>
+    <% if (noFormError || passwordsNotMatchingError) {%>
       <p><%= message %></p>
+    <% } else if (activeUserError) {%>
+      <p>Already an active user, please <a href='/login'>login</a></p>
     <% } %>
-    <form action='/' method='POST'>
+    <form action='/signup' method='POST'>
       email:<input type='text' name='email'>
       password:<input type='password' name='password'>
       confirm password:<input type='password' name='confirmPassword'>

@@ -1,5 +1,5 @@
 const client = require('./pg');
-const text = 'INSERT INTO users(email, password) VALUES($1, $2)';
+const text = 'INSERT INTO users (email, password) VALUES($1, $2)';
 
 
 const insertIntoDB = (values) => {client.query(text, `${values}`)
