@@ -15,13 +15,15 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (request, response) => {
+  console.log(request.cookies);
+  console.log(request.session);
   // If a user is not signed in - there is no cookie - render the homepage
   if(!request.cookies){
     response.render('homepage');
   }
   // Else send a welcome back message
   else {
-    response.send(`<p>Welcome Back ${request.session}</p>
+    response.send(`<p>Welcome Back ${request.session.email}</p>
       <p>There's nothing to do here but logout</p>
       <a href='/logout'>Logout</a>`);
   }
