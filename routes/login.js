@@ -1,10 +1,7 @@
 const express = require('express');
 const loginRouter = express.Router();
-const bodyParser = require('body-parser');
 const client = require('../pg');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const cookieSession = require('cookie-session');
 
 loginRouter.get('/login', (request, response) => {
   let errorObject = {
@@ -51,6 +48,7 @@ loginRouter.post('/login', (request, response, next) => {
       })
     })
     .then(result => bcrypt.compare(request.body.password, databasePassword[0]))
+    .catch(error => response.redirect('/login/?err=err2'))
     .then(result => {
       if (result === true) {
         next();

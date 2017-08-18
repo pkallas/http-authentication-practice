@@ -1,13 +1,20 @@
 # http-authentication-practice
 
-HTTP Authentication
+#Installation
+
+To run this app, first go to pg.js. You will see a constant named connectionString; change pkallas to your
+computer's username in order to connect to your own postgres client. Afterwards, type 'npm run db-init' to
+create the database. Finally, type 'npm start' to launch the program, and go to localhost://3000 to begin.
+
+#HTTP Authentication
+
 In this benchmark goal you're going to build an Express HTTP server that allows users to signup, login and logout of your application.
 
 Your HTTP routes will be able to render different information depending on whether the request is from an unknown visitor or a logged in user.
 
 There are a ton of specs you need to build so make sure you break each problem down into smaller steps you can take sequentially.
 
-Specs
+#Specs
 
 build this app in a new empty GitHub repository
 use node
@@ -67,7 +74,7 @@ you are redirected to the homepage
 and you visit /logout
 you are logged out and then redirected to the home page
 
-Stretch
+#Stretch
 
 Write tests for your express routes using chai-http
 Encrypt passwords using bcrypt

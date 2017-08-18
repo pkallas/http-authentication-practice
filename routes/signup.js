@@ -1,9 +1,7 @@
 const express = require('express');
 const signupRouter = express.Router();
-const bodyParser = require('body-parser');
 const client = require('../pg');
 const bcrypt = require('bcrypt');
-const cookieSession = require('cookie-session');
 
 // If no query error, render the page
 signupRouter.get('/signup', (request, response) => {
