@@ -3,7 +3,7 @@ const signupRouter = express.Router();
 const client = require('../pg');
 const bcrypt = require('bcrypt');
 
-// If no query error, render the page
+
 signupRouter.get('/signup', (request, response) => {
   let errorObject = {
     noFormError: false,
