@@ -22,7 +22,7 @@ signupRouter.get('/signup', (request, response) => {
   // render the page plus the appropriate message
   else if (request.query.err === 'err1') {
     errorObject.noFormError = true;
-    errorObject.message = 'Please provide and email and a password to sign up.';
+    errorObject.message = 'Please provide an email and a password to sign up.';
     response.render('signup', errorObject)
   }
   else if (request.query.err === 'err2') {
@@ -82,7 +82,7 @@ signupRouter.post('/signup', (request, response, next) => {
   }
 })
 
-// redirect to homepage with cookie now set, but first set the session to use
+// redirect to homepage, but first set the session to use so a cookie-session can be set
 
 signupRouter.post('/signup', (request, response) => {
   request.session.email = request.body.email;
