@@ -25,15 +25,9 @@ app.get('/', (request, response) => {
   response.render('homepage', { User });
 });
 
-// Create a route for logout
-app.get('/logout', (request, response, next) => {
-  //if link is clicked, clear cookie-session
-  request.session = null;
-  next();
-});
-
-// Then redirect to homepage with no cookies
+// Create a route for logout, then redirect to homepage with no cookies
 app.get('/logout', (request, response) => {
+  request.session = null;
   response.redirect('/');
 });
 
