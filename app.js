@@ -6,33 +6,32 @@ const port = process.env.NODE_ENV || 3000;
 const loginRouter = require('./routes/login');
 const signupRouter = require('./routes/signup');
 
-app.listen(port, () => {
-  console.log(`Listening at localhost://${port} 🙌`)
+if (process.env.NODE_ENV === 'test'){
+  app.EXPRESS_APP = true;
+  app.listen(3000);
+  module.exports = app;
+} else app.listen(3000, () => {
+    console.log('http://localhost:3000')
 });
 
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(cookieSession({
+  name: 'session',
+  secret: 'reallyLongKey930284iq3849q23pufndsja8rpq'
+}));
+
 app.get('/', (request, response) => {
-  console.log(request.cookies);
-  console.log(request.session);
-  // If a user is not signed in - there is no cookie - render the homepage
-  if(!request.cookies){
-    response.render('homepage');
-  }
-  // Else send a welcome back message
-  else {
-    response.send(`<p>Welcome Back ${request.session.email}</p>
-      <p>There's nothing to do here but logout</p>
-      <a href='/logout'>Logout</a>`);
-  }
+  !request.session.email ? User = 'Stranger' : User = request.session.email
+  response.render('homepage', { User });
 });
 
 // Create a route for logout
 app.get('/logout', (request, response, next) => {
   //if link is clicked, clear cookie-session
-  response.clearCookie('session');
+  request.session = null;
   next();
 });
 
@@ -41,6 +40,8 @@ app.get('/logout', (request, response) => {
   response.redirect('/');
 });
 
+// Routes for signup page
 app.use(signupRouter);
 
+// Routes for login page
 app.use(loginRouter);

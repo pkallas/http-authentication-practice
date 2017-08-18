@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon app.js",
     "db-init": "psql < schema.sql",
-    "test": "psql < schema_test.sql && mocha test"
+    "test": "mocha test"
   },
   "repository": {
     "type": "git",

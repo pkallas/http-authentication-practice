@@ -5,8 +5,13 @@
     <title>homepage</title>
   </head>
   <body>
-    <p>Hello Stranger</p>
-    <a href='./signup'>Signup</a>
-    <a href='./login'>Login</a>
+    <p>Hello <%= User %></p>
+    <% if (User === 'Stranger') {%>
+      <a href='./signup'>Signup</a>
+      <a href='./login'>Login</a>
+    <% } %>
+    <% if (User !== 'Stranger') {%>
+      <a href='/logout'>Logout</a>
+    <% } %>
   </body>
 </html>
