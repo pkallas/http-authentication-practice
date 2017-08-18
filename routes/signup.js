@@ -76,7 +76,6 @@ signupRouter.post('/signup', (request, response, next) => {
         let values = [submittedEmail, hash];
         client.query(insertText, values)
         .then(result => { console.log('Successfully added data to the database');
-        client.end();
         next();
         })
     .catch(error => console.error(error.stack))
