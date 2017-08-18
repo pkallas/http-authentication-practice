@@ -15,8 +15,6 @@ if (process.env.NODE_ENV === 'test'){
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(cookieSession({
   name: 'session',
   secret: 'reallyLongKey930284iq3849q23pufndsja8rpq'
@@ -38,6 +36,8 @@ app.get('/logout', (request, response, next) => {
 app.get('/logout', (request, response) => {
   response.redirect('/');
 });
+
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes for signup page
 app.use(signupRouter);
