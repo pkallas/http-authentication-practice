@@ -37,26 +37,4 @@ describe('app', function(){
       done();
     })
   })
-  it(`Should redirect to /login/?err=err1
-    when not given an email and password`, function(done) {
-    request(app)
-    .post('/login')
-    .send({ email: '', password: '' })
-    .end((error, response) => {
-      expect(error).to.be.null;
-      expect(response).to.redirectTo('http://localhost:3000/login/?err=err1');
-      done();
-    })
-  })
-  it(`Should redirect to signup/?err=err1
-    when not given an email, password, or confirmPassword`, function(done) {
-    request(app)
-    .post('/signup')
-    .send({ email: '', password: '', confirmPassword: ''})
-    .end((error, response) => {
-      expect(error).to.be.null;
-      expect(response).to.redirectTo('http://localhost:3000/signup/?err=err1');
-      done();
-    })
-  })
 })
