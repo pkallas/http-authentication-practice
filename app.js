@@ -2,12 +2,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
-const port = process.env.NODE_ENV || 3000;
 const loginRouter = require('./routes/login');
 const signupRouter = require('./routes/signup');
 
 if (process.env.NODE_ENV === 'test'){
   app.EXPRESS_APP = true;
+  app.listen(3000, () => {
+      console.log('http://localhost:3000')
+  });
   module.exports = app;
 } else app.listen(3000, () => {
     console.log('http://localhost:3000')

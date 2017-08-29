@@ -37,4 +37,23 @@ describe('app', function(){
       done();
     })
   })
+  it('Should redirect if the forms are not filled out', function(done) {
+    request(app)
+    .post('/signup')
+    .send({email: 'a@a.com', password: '', confirmPassword: ''})
+    .then(function(result) {
+      // console.log(result.res.req.path)
+      expect(result.res.req.path).to.eql('/signup/?err=err1')
+      done()
+    })
+  })
+  it('Should redirect if the password and confirmPassword forms do not match', function(done) {
+    request(app)
+    .post('/signup')
+    .send({email: 'a@a.com', password: '123', confirmPassword: '12'})
+    .then(function(result) {
+      expect(result).to.redirectTo('localhost://3000/signup/?err=err2')
+      done()
+    })
+  })
 })
