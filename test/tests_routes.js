@@ -37,23 +37,27 @@ describe('app', function(){
       done();
     })
   })
-  it('Should redirect if the forms are not filled out', function(done) {
-    request(app)
+  it('Should redirect if the forms are not filled out', function() {
+    return request(app)
     .post('/signup')
-    .send({email: 'a@a.com', password: '', confirmPassword: ''})
-    .then(function(result) {
+    .field('email', 'a@a.com')
+    .field('password', '')
+    .field('confirmPassword', '')
+    .then((result) => {
       // console.log(result.res.req.path)
       expect(result.res.req.path).to.eql('/signup/?err=err1')
-      done()
     })
   })
-  it('Should redirect if the password and confirmPassword forms do not match', function(done) {
-    request(app)
+  it('Should redirect if the password and confirmPassword forms do not match', function() {
+    return request(app)
     .post('/signup')
-    .send({email: 'a@a.com', password: '123', confirmPassword: '12'})
+    .set('content-type', 'application/x-www-form-urlencoded')
+     .send({email: 'test',
+          password: '12',
+          confirmPassword: '123'
+    })
     .then(function(result) {
-      expect(result).to.redirectTo('localhost://3000/signup/?err=err2')
-      done()
+      expect(result.redirects[0]).to.match(/\/signup\/\?err=err2$/)
     })
   })
 })

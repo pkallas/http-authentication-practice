@@ -11,9 +11,9 @@ if (process.env.NODE_ENV === 'test'){
       console.log('http://localhost:3000')
   });
   module.exports = app;
-} else app.listen(3000, () => {
-    console.log('http://localhost:3000')
-});
+} else {
+    app.listen(3000, () => console.log('http://localhost:3000'));
+};
 
 app.set('view engine', 'ejs');
 
